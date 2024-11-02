@@ -1,9 +1,22 @@
 security:
     password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        App\Entity\Student:
+            algorithm: auto
+        App\Entity\Professor:
+            algorithm: auto
     
     providers:
-        users_in_memory: { memory: null }
+        student_provider:
+            entity:
+                class: App\Entity\Student
+                property: Email
+        professor_provider:
+            entity:
+                class: App\Entity\Professor
+                property: Email
+        all_users:
+            chain:
+                providers: ['student_provider', 'professor_provider']
     
     firewalls:
         dev:
@@ -11,11 +24,20 @@ security:
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: all_users
+            custom_authenticator: App\Security\LoginFormAuthenticator
+            logout:
+                path: app_logout
+                target: app_login
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800 # 1 week
 
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+        - { path: ^/student, roles: ROLE_STUDENT }
+        - { path: ^/professor, roles: ROLE_PROFESSOR }
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER

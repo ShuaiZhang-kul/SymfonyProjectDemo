@@ -8,10 +8,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: ProfessorRepository::class)]
 #[ORM\Table(name: 'Professors')]
-class Professor
+class Professor implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column(name: 'ProfessorID', type: Types::INTEGER)]
@@ -43,6 +45,8 @@ class Professor
     #[Groups(['professor_read'])]
     private Collection $courses;
     
+    private array $roles = ['ROLE_PROFESSOR'];
+
     public function __construct()
     {
         $this->courses = new ArrayCollection();
@@ -129,6 +133,32 @@ class Professor
     public function setPasswordHash(?string $PasswordHash): static
     {
         $this->PasswordHash = $PasswordHash;
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // 如果存储了任何临时的、敏感的数据，在这里清除
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->Email;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->PasswordHash;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->PasswordHash = $password;
         return $this;
     }
 }

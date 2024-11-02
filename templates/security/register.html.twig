@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}注册{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -10,18 +10,48 @@
 {% block body %}
     <div class="auth-container">
         <div class="auth-box">
-            <h2>注册新账号</h2>
+            <h2>Register a New Account</h2>
 
-            {{ form_start(registrationForm) }}
+            {% for flash_error in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+            {% endfor %}
+
+            {{ form_start(registrationForm, {'attr': {'class': 'login-form'}}) }}
+                <div class="form-group options-row">
+                    <div class="toggle-switch">
+                        <input type="checkbox" 
+                               id="user_type" 
+                               name="_user_type" 
+                               value="professor"
+                               {% if app.request.query.get('type') == 'professor' %}checked{% endif %}>
+                        <label for="user_type" class="toggle">
+                            <span class="toggle-student">Student</span>
+                            <span class="toggle-professor">Professor</span>
+                        </label>
+                    </div>
+                </div>
+
                 <div class="form-group">
-                    {{ form_label(registrationForm.email) }}
-                    {{ form_widget(registrationForm.email) }}
-                    {{ form_errors(registrationForm.email) }}
+                    {{ form_label(registrationForm.FirstName) }}
+                    {{ form_widget(registrationForm.FirstName, {'attr': {'class': 'form-input'}}) }}
+                    {{ form_errors(registrationForm.FirstName) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(registrationForm.LastName) }}
+                    {{ form_widget(registrationForm.LastName, {'attr': {'class': 'form-input'}}) }}
+                    {{ form_errors(registrationForm.LastName) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(registrationForm.Email) }}
+                    {{ form_widget(registrationForm.Email, {'attr': {'class': 'form-input'}}) }}
+                    {{ form_errors(registrationForm.Email) }}
                 </div>
 
                 <div class="form-group">
                     {{ form_label(registrationForm.plainPassword) }}
-                    {{ form_widget(registrationForm.plainPassword) }}
+                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-input'}}) }}
                     {{ form_errors(registrationForm.plainPassword) }}
                 </div>
 
@@ -31,11 +61,11 @@
                     {{ form_errors(registrationForm.agreeTerms) }}
                 </div>
 
-                <button type="submit" class="btn-submit">注册</button>
+                <button type="submit" class="btn-submit">Register</button>
             {{ form_end(registrationForm) }}
 
             <div class="auth-links">
-                <a href="{{ path('app_login') }}">已有账号？立即登录</a>
+                <a href="{{ path('app_login') }}">Already have an account? Log in</a>
             </div>
         </div>
     </div>
