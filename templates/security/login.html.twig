@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}登录{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/security.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="auth-container">
+        <div class="auth-box">
+            <h2>登录</h2>
+            
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            <form method="post">
+                <div class="form-group">
+                    <label for="email">邮箱</label>
+                    <input type="email" id="email" name="_username" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="_password" required>
+                </div>
+
+                <div class="form-group remember-me">
+                    <input type="checkbox" id="remember_me" name="_remember_me">
+                    <label for="remember_me">记住我</label>
+                </div>
+
+                <button type="submit" class="btn-submit">登录</button>
+            </form>
+
+            <div class="auth-links">
+                <a href="{{ path('app_register') }}">还没有账号？立即注册</a>
+                <a href="{{ path('app_forgot_password') }}">忘记密码？</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/security.js') }}"></script>
+{% endblock %} 

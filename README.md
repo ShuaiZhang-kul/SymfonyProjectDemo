@@ -10,6 +10,7 @@ The application is hosted on AWS with the following setup:
 - RDS for MSSQL database
 - S3 for static asset storage
 - Route 53 for DNS management
+- ALB for load balancer
 
 ## Tech Stack
 
@@ -27,9 +28,9 @@ The application is hosted on AWS with the following setup:
 This project follows RESTful architectural style and provides standard HTTP interfaces.
 
 ## System Requirements
-- PHP 7.4+
+- PHP 8.3+
 - MSSQL Server 2016+
-- Node.js 14+
+- Symfony 6
 - Angular CLI
 
 ## Installation

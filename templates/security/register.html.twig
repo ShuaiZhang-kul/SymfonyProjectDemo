@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}注册{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/security.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="auth-container">
+        <div class="auth-box">
+            <h2>注册新账号</h2>
+
+            {{ form_start(registrationForm) }}
+                <div class="form-group">
+                    {{ form_label(registrationForm.email) }}
+                    {{ form_widget(registrationForm.email) }}
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(registrationForm.plainPassword) }}
+                    {{ form_widget(registrationForm.plainPassword) }}
+                    {{ form_errors(registrationForm.plainPassword) }}
+                </div>
+
+                <div class="form-group terms">
+                    {{ form_widget(registrationForm.agreeTerms) }}
+                    {{ form_label(registrationForm.agreeTerms) }}
+                    {{ form_errors(registrationForm.agreeTerms) }}
+                </div>
+
+                <button type="submit" class="btn-submit">注册</button>
+            {{ form_end(registrationForm) }}
+
+            <div class="auth-links">
+                <a href="{{ path('app_login') }}">已有账号？立即登录</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/security.js') }}"></script>
+{% endblock %} 

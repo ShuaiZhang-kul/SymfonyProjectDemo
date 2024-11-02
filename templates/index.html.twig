@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+    Welcome to Ku Leuven, {{ dataArray.username }}
+{% endblock %}
+
+{% block myBlock %}
+    <h1>Welcome to Symfony</h1>
+    <p>fullName: {{ fullName }}</p>       {# Access variable from dataArray #}     
+    <p>Age: {{ dataArray.age }}</p>
+    iuhdwd
+{% endblock %}
+
+{% block body %}
+<div id="app">
+    {% for hobby in dataArray.hobbies %}            {# Access array from dataArray #}     
+        <p>{{ hobby }}</p>
+    {% endfor %}
+</div>
+{% endblock %}
