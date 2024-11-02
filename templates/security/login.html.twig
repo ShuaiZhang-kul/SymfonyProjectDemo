@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}登录{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -10,34 +10,44 @@
 {% block body %}
     <div class="auth-container">
         <div class="auth-box">
-            <h2>登录</h2>
+            <h2 style="text-align: center;">Login</h2>
             
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
 
-            <form method="post">
+            <form method="post" class="login-form">
                 <div class="form-group">
-                    <label for="email">邮箱</label>
-                    <input type="email" id="email" name="_username" required autofocus>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="_username" class="form-input" required autofocus>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">密码</label>
-                    <input type="password" id="password" name="_password" required>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="_password" class="form-input" required>
                 </div>
 
-                <div class="form-group remember-me">
-                    <input type="checkbox" id="remember_me" name="_remember_me">
-                    <label for="remember_me">记住我</label>
+                <div class="form-group options-row">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember_me" name="_remember_me">
+                        <label for="remember_me">Remember me</label>
+                    </div>
+
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="user_type" name="_user_type" value="professor">
+                        <label for="user_type" class="toggle">
+                            <span class="toggle-student">Student</span>
+                            <span class="toggle-professor">Professor</span>
+                        </label>
+                    </div>
                 </div>
 
-                <button type="submit" class="btn-submit">登录</button>
+                <button type="submit" class="btn-submit">Login</button>
             </form>
 
             <div class="auth-links">
-                <a href="{{ path('app_register') }}">还没有账号？立即注册</a>
-                <a href="{{ path('app_forgot_password') }}">忘记密码？</a>
+                <a href="{{ path('app_register') }}">Don't have an account? Register now</a><br>
+                <a href="{{ path('app_forgot_password') }}">Forgot password?</a>
             </div>
         </div>
     </div>

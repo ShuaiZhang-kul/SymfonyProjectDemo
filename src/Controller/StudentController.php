@@ -41,10 +41,20 @@ class StudentController extends AbstractController
             return new JsonResponse(['error' => 'Student not found'], 404);
         }
 
-        // 序列化 Student 实体
-        $data = $serializer->serialize($student, 'json', ['groups' => 'student_read']);
-
-        return new JsonResponse($data, 200, [], true);
+        $processedStudent = [
+            'StudentID' => $student->getStudentID(),
+            'FirstName' => $student->getFirstName(),
+            'LastName' => $student->getLastName(),
+            'Email' => $student->getEmail(),
+            'DateOfBirth' => $student->getDateOfBirth(),
+            'EnrollmentYear' => $student->getEnrollmentYear(),
+            'Courses' => array_map(                     //for-each: array->course
+                fn($course) => ['CourseId' => $course->getCourseID(), 'CourseName' => $course->getCourseName()],    
+                $student->getCourses()->toArray()
+            )
+        ];
+        $jsonData = $serializer->serialize($processedStudent, 'json');
+        return new JsonResponse($jsonData, 200, [], true);
     }
 
     #[Route('/students', name: 'app_students', methods: ['GET'])]
@@ -53,22 +63,6 @@ class StudentController extends AbstractController
         $students = $this->entityManager
             ->getRepository(Student::class)
             ->findAll();
-
-    
-        // $jsonData = $serializer->serialize($students, 'json', [
-        //     'groups' => ['student_read'],
-        //     'circular_reference_handler' => function ($object) {
-        //         if ($object instanceof Course) {
-        //             return $object->getCourseID();
-        //         }
-        //         if ($object instanceof Professor) {
-        //             return $object->getProfessorID();
-        //         }
-        //         if ($object instanceof Student) {
-        //             return $object->getStudentID();
-        //         }
-        //     }
-        // ]);
         $processedStudents = array_map(function($student) {
             return [
                 'StudentID' => $student->getStudentID(),
@@ -77,7 +71,8 @@ class StudentController extends AbstractController
                 'Email' => $student->getEmail(),
                 'DateOfBirth' => $student->getDateOfBirth(),
                 'EnrollmentYear' => $student->getEnrollmentYear(),
-                'courseIds' => $student->getCourses()->map(fn($course) => $course->getCourseID())->toArray()
+                'Courses' => $student->getCourses()->map(fn($course) => 
+                ['CourseId' => $course->getCourseID(), 'CourseName' => $course->getCourseName()])->toArray()
             ];
         }, $students);
         $jsonData = $serializer->serialize($processedStudents, 'json');
