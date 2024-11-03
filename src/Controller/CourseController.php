@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\HttpFoundation\Request;
 /**
  * Controller class for handling course-related operations
  */
@@ -38,29 +39,30 @@ class CourseController extends AbstractController
             'message' => "您是好人, 人好是您🫡🫡🫡! ",
         ]);
     }
-    #[Route('/courses', name: 'get_all_courses', methods: ['GET'])]
+    #[Route('/course/courses', name: 'get_all_courses', methods: ['GET'])]
     public function getAllCourses(SerializerInterface $serializer): JsonResponse
     {
         $courses = $this->entityManager
             ->getRepository(Course::class)
             ->findAll();
 
-        $jsonData = $serializer->serialize($courses, 'json', [
-            'groups' => ['student_read'],
-            'circular_reference_handler' => function ($object) {
-                if ($object instanceof Course) {
-                    return $object->getCourseID();
-                }
-                if ($object instanceof Professor) {
-                    return $object->getProfessorID();
-                }
-                if ($object instanceof Student) {
-                    return $object->getStudentID();
-                }
-            }
-        ]);
-
-        return new JsonResponse($jsonData, 200, [], true);
+            $processedCourses = array_map(function($course) {
+                return [
+                    'CourseID' => $course->getCourseID(),
+                    'CourseName' => $course->getCourseName(), 
+                    'CourseCode' => $course->getCourseCode(),
+                    'Description' => $course->getDescription(),
+                    'Credits' => $course->getCredits(),
+                    'Department' => $course->getDepartment(),
+                    'studentCount' => $course->getStudents()->count(), // 仅返回数量
+                    'professorName' => $course->getProfessor()->getFirstName() . ' ' .  
+                    $course->getProfessor()->getLastName() // 仅返回教授姓名
+                ];
+            }, $courses);
+    
+            $jsonData = $serializer->serialize($processedCourses, 'json');
+    
+            return new JsonResponse($jsonData, 200, [], true);
     }
     #[Route('/course/{id}', name: 'get_course', methods: ['GET'])]
     public function getCourse(int $id, SerializerInterface $serializer): JsonResponse
@@ -89,4 +91,65 @@ class CourseController extends AbstractController
 
         return new JsonResponse($jsonData, 200, [], true);
     }           
+    /**
+     * @Route("/api/course/enroll", name="course_enroll", methods={"POST"})
+     */
+    #[Route('/course/enroll', name: 'course_enroll', methods: ['POST'])]
+    public function enroll(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $courseId = $data['courseId'];
+        
+        try {
+            // 获取当前登录学生
+            $student = $this->getUser();
+            
+            // 获取课程
+            $course = $this->entityManager
+            ->getRepository(Course::class)
+            ->find($courseId);
+            
+            if (!$course) {
+                throw new \Exception('Course not found');
+            }
+            
+            // 添加选课逻辑
+            $student->addCourse($course);
+            $this->entityManager->persist($student);
+            $this->entityManager->flush();
+            
+            return new JsonResponse(['message' => 'Enrollment successful'], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+    #[Route('/course/unenroll', name: 'course_unenroll', methods: ['POST'])]
+    public function unenroll(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $courseId = $data['courseId'];
+        
+        try {
+            // Get current logged in student
+            $student = $this->getUser();
+            
+            // Get the course
+            $course = $this->entityManager
+                ->getRepository(Course::class)
+                ->find($courseId);
+            
+            if (!$course) {
+                throw new \Exception('Course not found');
+            }
+            
+            // Remove course from student's courses
+            $student->removeCourse($course);
+            $this->entityManager->persist($student);
+            $this->entityManager->flush();
+            
+            return new JsonResponse(['message' => 'Successfully unenrolled from course'], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
 }

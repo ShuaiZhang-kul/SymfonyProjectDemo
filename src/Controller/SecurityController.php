@@ -85,12 +85,6 @@ class SecurityController extends AbstractController
             $user->setLastName($form->get('LastName')->getData());
             $user->setEmail($form->get('Email')->getData());
 
-            // // 生成ID
-            // if ($user instanceof Student) {
-            //     $user->setStudentID(date('Y') . mt_rand(1000, 9999));
-            // } else {
-            //     $user->setProfessorID( date('Y') . mt_rand(100, 999));
-            // }
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();

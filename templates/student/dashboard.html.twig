@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block body %}
+<div class="dashboard-container">
+    <div class="student-profile-section">
+        <div class="profile-header">
+            <div class="welcome-text">
+                <h1>Welcome back, {{ student.FirstName }}!</h1>
+                <span class="student-id">Student ID: {{ student.StudentID }}</span>
+            </div>
+            <div class="profile-actions">
+                <button class="logout-btn" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+        
+        <div class="profile-details">
+            <div class="info-card">
+                <div class="card-header">
+                    <i class="fas fa-user-graduate"></i>
+                    <h3>Personal Information</h3>
+                </div>
+                <div class="info-content">
+                    <p><i class="fas fa-user"></i> {{ student.FirstName }} {{ student.LastName }}</p>
+                    <p><i class="fas fa-envelope"></i> {{ student.Email }}</p>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <div class="card-header">
+                    <i class="fas fa-book"></i>
+                    <h3>My Courses</h3>
+                </div>
+                <div class="info-content">
+                    {% if student.courses|length > 0 %}
+                        <ul class="enrolled-courses-list">
+                            {% for course in student.courses %}
+                                <li>
+                                    <span class="course-name">{{ course.CourseName }}</span>
+                                    <span class="course-code">{{ course.CourseCode }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="no-courses-message">
+                            <i class="fas fa-info-circle"></i>
+                            No courses selected yet!
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="available-courses-section">
+        <div class="section-header">
+            <h2><i class="fas fa-graduation-cap"></i> Available Courses</h2>
+            <div class="course-filters">
+                <input type="text" placeholder="Search courses..." class="search-input">
+                <select class="department-filter">
+                    <option value="">All Departments</option>
+                </select>
+            </div>
+        </div>
+        <div id="course-grid" class="course-grid">
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                Loading courses...
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/course-enrollment.js') }}"></script>
+{% endblock %} 

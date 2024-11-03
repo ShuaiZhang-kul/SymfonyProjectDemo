@@ -31,7 +31,7 @@ class StudentController extends AbstractController
         ]);
     }
 
-    #[Route('/student/{id}', name: 'get_student', methods: ['GET'])]
+    #[Route('/student/{id<\d+>}', name: 'get_student', methods: ['GET'])]
     public function getStudent(int $id, StudentRepository $studentRepository, SerializerInterface $serializer): JsonResponse
     {
         // 从数据库中获取 Student 实体
@@ -57,7 +57,7 @@ class StudentController extends AbstractController
         return new JsonResponse($jsonData, 200, [], true);
     }
 
-    #[Route('/students', name: 'app_students', methods: ['GET'])]
+    #[Route('/student/students', name: 'app_students', methods: ['GET'])]
     public function getAllStudents(SerializerInterface $serializer): JsonResponse
     {
         $students = $this->entityManager
@@ -78,5 +78,39 @@ class StudentController extends AbstractController
         $jsonData = $serializer->serialize($processedStudents, 'json');
         return new JsonResponse($jsonData, 200, [], true);
     }
+    #[Route('/student/dashboard', name: 'student_dashboard')]
+    public function dashboard(): Response
+    {
+        /** @var Student $student */
+        $student = $this->getUser();
+        
+      
+        return $this->render('student/dashboard.html.twig', [
+            'student' => $student,
+        ]);
+    }
+
+    #[Route('/student/enrolled-courses', name: 'student_enrolled_courses', methods: ['GET'])]
+    public function getEnrolledCourses(): JsonResponse
+    {
+        $student = $this->getUser();
+        $courses = $student->getCourses();
+        $processedCourses = array_map(function($course) {
+            return [
+                'CourseID' => $course->getCourseID(),
+                'CourseName' => $course->getCourseName(),
+                'CourseCode' => $course->getCourseCode(),
+                'Description' => $course->getDescription(),
+                'Credits' => $course->getCredits(),
+                'Department' => $course->getDepartment(),
+                'professorName' => $course->getProfessor() ? 
+                    $course->getProfessor()->getFirstName() . ' ' . 
+                    $course->getProfessor()->getLastName() : 'TBA'
+            ];
+        }, $courses->toArray());
+        
+        return new JsonResponse($processedCourses);
+    }   
+    
     
 }
