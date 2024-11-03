@@ -152,4 +152,33 @@ class CourseController extends AbstractController
             return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
+    #[Route('/course/new', name: 'create_course', methods: ['POST'])]
+    public function createCourse(Request $request): JsonResponse
+    {
+        try {
+            $data = json_decode($request->getContent(), true);
+            
+            // Create new course entity
+            $course = new Course();
+            $course->setCourseName($data['courseName']);
+            $course->setCourseCode($data['courseCode']);
+            $course->setDescription($data['description']);
+            $course->setCredits($data['credits']);
+            $course->setDepartment($data['department']);
+            
+            // Save to database
+            $this->entityManager->persist($course);
+            $this->entityManager->flush();
+            
+            return new JsonResponse([
+                'message' => 'Course created successfully',
+                'courseId' => $course->getCourseID()
+            ], Response::HTTP_CREATED);
+            
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'error' => 'Failed to create course: ' . $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
 }

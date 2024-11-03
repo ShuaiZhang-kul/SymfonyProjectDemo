@@ -1,0 +1,31 @@
+<!-- ... existing code ... -->
+
+<!-- Add New Course Button -->
+<button class="btn btn-primary" onclick="openNewCourseForm()">
+  Create New Course
+</button>
+
+<!-- New Course Modal Form -->
+<div id="newCourseModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeNewCourseForm()">&times;</span>
+    <h2>Create New Course</h2>
+    <form id="newCourseForm">
+      <div class="form-group">
+        <label for="courseName">Course Name:</label>
+        <input type="text" id="courseName" name="courseName" required>
+      </div>
+      <div class="form-group">
+        <label for="courseCode">Course Code:</label>
+        <input type="text" id="courseCode" name="courseCode" required>
+      </div>
+      <div class="form-group">
+        <label for="description">Course Description:</label>
+        <textarea id="description" name="description" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+  </div>
+</div>
+
+<!-- ... existing code ... --> 

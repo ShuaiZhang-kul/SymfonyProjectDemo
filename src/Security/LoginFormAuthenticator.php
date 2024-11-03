@@ -39,7 +39,6 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $userType = $request->request->get('_user_type') === 'professor' ? 'professor' : 'student';
         $csrfToken = $request->request->get('_csrf_token');
 
-        // 添加调试日志
         error_log("Login attempt - Email: $email, UserType: $userType");
 
         try {

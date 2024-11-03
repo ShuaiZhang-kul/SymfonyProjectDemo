@@ -50,7 +50,7 @@ class ProfessorController extends AbstractController
         return new JsonResponse($jsonData, 200, [], true);
     }
 
-    #[Route('/professor/{id}', name: 'get_professor', methods: ['GET'])]
+    #[Route('/professor/{{id<\d+>}', name: 'get_professor', methods: ['GET'])]
     public function getProfessor(int $id, SerializerInterface $serializer): JsonResponse
     {
         $professor = $this->entityManager
@@ -77,5 +77,14 @@ class ProfessorController extends AbstractController
         ]);
 
         return new JsonResponse($jsonData, 200, [], true);
+    }
+    #[Route('/professor/dashboard', name: 'professor_dashboard')]
+    public function dashboard(): Response
+    {
+        /** @var Professor $professor */    
+        $professor = $this->getUser();
+        return $this->render('professor/dashboard.html.twig', [
+            'professor' => $professor,
+        ]);
     }
 }
