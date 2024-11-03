@@ -62,12 +62,47 @@
 
 .card-header {
     display: flex;
-    align-items: center;
-    gap: 1rem;
+
+    align-items: left;
+    padding: 0px 0px 16px;
+    margin: 0px 0px 24px;
+    font-family: "PingFang SC";
+    font-size: 16px;
+    color: #000000;
 }
 
-.card-header button {
+.card-header i {
+    margin-right: 8px;
+}
+
+.card-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    font-size: 1.2rem;
+    color: #2c3e50;
+    text-align: left;
+}
+
+.btn-primary {
+    background-color: #4A90E2;
+    color: #FFFFFF;
+    font-family: Arial;
+    font-size: 13.3333px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
     margin-left: auto;
+}
+
+.btn-primary:hover {
+    background-color: #357abd;
+}
+
+.btn-primary i {
+    font-size: 0.9rem;
 }
 
 .info-content {
@@ -90,22 +125,40 @@
 .teaching-courses-list li {
     display: flex;
     justify-content: space-between;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #eee;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.5rem;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.teaching-courses-list li:last-child {
-    border-bottom: none;
+.teaching-courses-list li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.teaching-courses-list li i {
+    color: #4a90e2;
+    margin-right: 1rem;
 }
 
 .course-name {
     font-weight: 500;
     color: #2c3e50;
+    flex-grow: 1;
+    margin-right: 1rem;
 }
 
 .course-code {
     color: #666;
     font-size: 0.9rem;
+    background: #f8f9fa;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    min-width: 80px;
+    text-align: center;
 }
 
 .no-courses-message {
@@ -167,4 +220,102 @@
 .form-group textarea {
     height: 100px;
     resize: vertical;
-} 
+}
+
+/* 课程卡片样式 */
+.course-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid #e1e8ed;
+    padding: 20px;
+}
+
+.course-header {
+    margin-bottom: 12px;
+}
+
+.course-description {
+    margin: 8px 0;
+    line-height: 1.5;
+}
+
+.course-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+}
+
+.label {
+    color: #64748b;  /* 使用稍微柔和的灰色 */
+    font-size: 16px;
+}
+
+.value {
+    color: #1e293b;  /* 深色文本 */
+    font-size: 16px;
+    text-align: right;
+}
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    padding: 20px 0;
+}
+
+.user-id {
+    display: inline-block;
+    background-color: #f8f9fa;  /* 浅灰色背景 */
+    padding: 8px 16px;
+    border-radius: 20px;  /* 圆角 */
+    color: #6c757d;  /* 灰色文字 */
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+.user-id span {
+    font-weight: normal;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.section-header i {
+    background-color: #e8f0fe;  /* 浅蓝色背景 */
+    color: #4285f4;  /* 蓝色图标 */
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 20px;
+}
+
+.section-header h2 {
+    color: #1a202c;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.available-courses-section {
+    margin-top: 24px;
+    background: var(--card-background);  /* 使用变量保持一致性 */
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 如果需要定义变量 */
+:root {
+    --card-background: #ffffff;  /* 或者其他你想要的背景色 */
+}

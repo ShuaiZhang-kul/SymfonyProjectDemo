@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -84,6 +85,9 @@ class SecurityController extends AbstractController
             $user->setFirstName($form->get('FirstName')->getData());
             $user->setLastName($form->get('LastName')->getData());
             $user->setEmail($form->get('Email')->getData());
+            if($userType === 'professor'){
+                $user->setDepartment('Computer Science');
+            }
 
 
             $this->entityManager->persist($user);

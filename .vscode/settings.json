@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "mssqlOptions": {
+                "appName": "SQLTools",
+                "useUTC": true,
+                "encrypt": true
+            },
+            "previewLimit": 50,
+            "server": "database-1.ctokwyi2m301.eu-west-3.rds.amazonaws.com",
+            "port": 1433,
+            "driver": "MSSQL",
+            "name": "assa",
+            "database": "CourseChoosingSystem",
+            "username": "admin",
+            "password": "Zs19970218."
+        }
+    ]
+}

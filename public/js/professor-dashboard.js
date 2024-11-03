@@ -6,39 +6,45 @@ function openNewCourseForm() {
     document.getElementById('newCourseModal').style.display = 'block';
   }
   
-  function closeNewCourseForm() {
-    document.getElementById('newCourseModal').style.display = 'none';
-  }
+function closeNewCourseForm() {
+  document.getElementById('newCourseModal').style.display = 'none';
+}
   
-  document.getElementById('newCourseForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const formData = {
-      courseName: document.getElementById('courseName').value,
-      courseCode: document.getElementById('courseCode').value,
-      description: document.getElementById('description').value
-    };
-  
-    try {
-      const response = await fetch('/course/new', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-  
-      if (response.ok) {
-        // 成功创建课程后刷新页面
-        window.location.reload();
-      } else {
-        alert('创建课程失败，请重试');
+// 等待DOM加载完成后再添加事件监听器
+document.addEventListener('DOMContentLoaded', () => {
+  const newCourseForm = document.getElementById('newCourseForm');
+  if (newCourseForm) {
+    newCourseForm.onsubmit = async (e) => {
+      e.preventDefault();
+      
+      const formData = {
+        courseName: document.getElementById('courseName').value,
+        courseCode: document.getElementById('courseCode').value,
+        description: document.getElementById('description').value,
+        credits: document.getElementById('credits').value
+      };
+
+      try {
+        const response = await fetch('/course/new', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+          window.location.reload();
+        } else {
+          alert('Create course failed, please try again');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred, please try again');
       }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('发生错误，请重试');
-    }
-  });
+    };
+  }
+});
   
   // 点击modal外部关闭
   window.onclick = function(event) {

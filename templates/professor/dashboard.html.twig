@@ -11,6 +11,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/professor-dashboard.js') }}"></script>
+    <script src="{{ asset('js/professor-courses-display.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -18,8 +19,10 @@
     <div class="professor-profile-section">
         <div class="profile-header">
             <div class="welcome-text">
-                <h1><i class="fas fa-user-circle"></i> Welcome back, {{ professor.FirstName }}!</h1>
-                <span class="professor-id"><i class="fas fa-id-badge"></i> Professor ID: {{ professor.ProfessorID }}</span>
+                <h1><i class="fas fa-user-circle"></i> Welcome back, Prof. {{ professor.FirstName }}!</h1>
+                <div class="user-id">
+                    <span>Professor ID: {{ professor.ProfessorID }}</span>
+                </div>
             </div>
             <div class="profile-actions">
                 <button class="logout-btn" onclick="handleLogout()">
@@ -38,6 +41,7 @@
                 <div class="info-content">
                     <p><i class="fas fa-user"></i> {{ professor.FirstName }} {{ professor.LastName }}</p>
                     <p><i class="fas fa-envelope"></i> {{ professor.Email }}</p>
+                    <p><i class="fas fa-building"></i> {{ professor.Department }}</p>
                 </div>
             </div>
             
@@ -86,6 +90,14 @@
                     <input type="text" id="courseCode" name="courseCode" required>
                 </div>
                 <div class="form-group">
+                    <label for="credits">credits</label>
+                    <select id="credits" name="credits" required class="form-input">
+                        {% for i in 1..20 %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="description">Course Description:</label>
                     <textarea id="description" name="description" required></textarea>
                 </div>
@@ -93,6 +105,19 @@
                     <i class="fas fa-save"></i> Submit
                 </button>
             </form>
+        </div>
+    </div>
+
+    <div class="available-courses-section">
+        <div class="section-header">
+            <i class="fas fa-graduation-cap"></i>
+            <h2>Available Courses</h2>
+        </div>
+        <div id="course-grid" class="course-grid">
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                Loading courses...
+            </div>
         </div>
     </div>
 </div>

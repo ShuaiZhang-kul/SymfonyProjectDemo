@@ -164,8 +164,13 @@ class CourseController extends AbstractController
             $course->setCourseCode($data['courseCode']);
             $course->setDescription($data['description']);
             $course->setCredits($data['credits']);
-            $course->setDepartment($data['department']);
-            
+
+            $professor = $this->getUser();
+            if (!$professor) {
+                throw new \Exception('Professor not found - user not authenticated');
+            }
+            $course->setDepartment($professor->getDepartment());
+            $course->setProfessor($professor);
             // Save to database
             $this->entityManager->persist($course);
             $this->entityManager->flush();

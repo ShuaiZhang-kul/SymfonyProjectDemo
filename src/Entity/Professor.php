@@ -80,6 +80,11 @@ class Professor implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->ProfessorID;
     }
+    public function setProfessorID(int $ProfessorID): static
+    {
+        $this->ProfessorID = $ProfessorID;
+        return $this;
+    }
 
     public function getFirstName(): ?string
     {

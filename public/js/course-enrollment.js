@@ -1,5 +1,19 @@
+const courseColors = [
+    'rgba(74, 144, 226, 0.1)',   // 浅蓝色
+    'rgba(80, 200, 120, 0.1)',   // 浅绿色
+    'rgba(245, 166, 35, 0.1)',   // 浅橙色
+    'rgba(155, 89, 182, 0.1)',   // 浅紫色
+    'rgba(231, 76, 60, 0.1)',    // 浅红色
+    'rgba(52, 152, 219, 0.1)',   // 浅天蓝色
+    'rgba(46, 204, 113, 0.1)',   // 浅翠绿色
+    'rgba(230, 126, 34, 0.1)',   // 浅橙褐色
+    'rgba(142, 68, 173, 0.1)',   // 浅深紫色
+    'rgba(22, 160, 133, 0.1)'    // 浅青色
+];
 document.addEventListener('DOMContentLoaded', function() {
     loadCourses();
+    assignRandomColors();  // 添加颜色分配调用
+
 });
 
 let enrolledCourses = new Set();
@@ -46,9 +60,10 @@ function createCourseCard(course) {
     const card = document.createElement('div');
     card.className = 'course-card';
     const isEnrolled = enrolledCourses.has(course.CourseID);
-    
+    const randomColor = courseColors[Math.floor(Math.random() * courseColors.length)];
+
     card.innerHTML = `
-        <div class="course-header">
+        <div class="course-header" style="background-color: ${randomColor}; padding: 16px; border-radius: 8px;">
             <h3>${escapeHtml(course.CourseName)}</h3>
             <span class="course-code">${escapeHtml(course.CourseCode)}</span>
         </div>
@@ -191,4 +206,5 @@ async function handleLogout() {
         console.error('Error during logout:', error);
         showError('Network error during logout.');
     }
+
 }

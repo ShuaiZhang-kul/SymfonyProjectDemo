@@ -34,6 +34,7 @@ security:
                 lifetime: 604800 # 1 week
 
     access_control:
+        - { path: ^/api/courses, roles: PUBLIC_ACCESS }
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/course, roles: PUBLIC_ACCESS }
         - { path: ^/register, roles: PUBLIC_ACCESS }
