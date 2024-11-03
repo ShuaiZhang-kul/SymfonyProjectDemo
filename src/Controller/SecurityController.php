@@ -14,7 +14,7 @@ use App\Entity\Student;
 use App\Entity\Professor;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 class SecurityController extends AbstractController
 {
     public function __construct(
@@ -109,4 +109,12 @@ class SecurityController extends AbstractController
     {
         return $this->render('security/forgot_password.html.twig');
     } 
+    #[Route('/health', name: 'health_check', methods: ['GET'])]
+    public function check(): JsonResponse
+    {
+        return new JsonResponse([
+            'status' => 'ok',
+            'timestamp' => time()
+        ]);
+    }
 } 

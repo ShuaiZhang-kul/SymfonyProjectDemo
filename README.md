@@ -83,4 +83,4 @@ All responses are in JSON format with appropriate HTTP status codes:
 
 ---
 #Test
-http://15.236.175.232:8000/
+http://symfonyweb-1236172443.eu-west-3.elb.amazonaws.com
