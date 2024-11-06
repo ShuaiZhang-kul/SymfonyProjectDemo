@@ -1,0 +1,11 @@
+# version: '3.8'
+
+# services:
+#   app:                  # Symfony service
+#     build: .            # Build image using current directory Dockerfile
+#     ports:
+#       - "8200:8000"     # Port mapping
+#     volumes:
+#       - .:/var/www/html  # Mount directory - host directory：container directory
+#     environment:
+#       - DATABASE_URL=${DATABASE_URL}

@@ -81,6 +81,36 @@ All responses are in JSON format with appropriate HTTP status codes:
 - 500: Server Error
 
 
+## Docker Deployment
+
+### Prerequisites
+- Docker installed
+- Git repository cloned
+
+### Build and Run
+
+1. Build the Docker image
+```bash
+docker build -t symfony-app .
+```
+2. Run the Docker container
+```bash
+docker run -p 8200:80 symfony-app
+```
+3. Stop and remove existing containers
+```bash
+docker stop $(docker ps -q)
+docker rm $(docker ps -a -q)
+```
+4. Rebuild
+```bash
+docker build -t symfony-app .
+```
+5. Run
+```bash
+docker run -p 8200:80 symfony-app
+```
+
 #Test
 ---
 http://symfonyweb-1236172443.eu-west-3.elb.amazonaws.com
